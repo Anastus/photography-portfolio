@@ -1,0 +1,11 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+  }
+  
+  .btn-primary {
+    padding: 10px 20px;
+    background: white;
+    color: black;
+    border-radius: 6px;
+  }
