@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
-/* Simple portfolio App (plain CSS, no Tailwind) 
+/* Simple portfolio App (plain CSS, no Tailwind)
    Replace asset paths with your actual files under public/assets/
 */
 
@@ -17,25 +17,29 @@ function Hero() {
   return (
     <header className="hero">
       <video
+        id="bgVideo"
         className="hero-video"
         autoPlay
         muted
         loop
         playsInline
         preload="metadata"
+        poster="/assets/bg-poster.jpg"
       >
-        <source src="/assets/bg-motion.mp4" type="video/mp4" />
-        {/* add webm fallback if you have it */}
+        <source src="/assets/bg-motion.webm" type="video/webm" />
+        <source src="/assets/background.mp4" type="video/mp4" />
+        {/* fallback text */}
+        Your browser does not support the background video.
       </video>
 
       <div className="hero-overlay" />
 
       <div className="hero-content">
-        <h1 className="site-title">Anastus John's Photography</h1>
-        <p className="site-sub">Photography · Videography · Storytelling</p>
+        <h1 className="site-title">Reflections Photography</h1>
+        <p className="site-sub">Photography · Videography · Visual Storytelling</p>
         <div className="hero-ctas">
           <a href="#portfolio" className="btn primary">View Work</a>
-          <a href="#contact" className="btn hollow">Contact</a>
+          <a href="#contact" className="btn hollow">Instagram</a>
         </div>
       </div>
 
@@ -47,7 +51,7 @@ function Hero() {
 function Gallery({ onOpen }) {
   return (
     <section id="portfolio" className="panel">
-      <h2>Selected Work</h2>
+      <h2>Photography</h2>
       <div className="grid">
         {GALLERY.map((it, i) => (
           <button
@@ -91,16 +95,6 @@ function Lightbox({ index, items, onClose, onPrev, onNext }) {
   );
 }
 
-function Socials() {
-  return (
-    <div className="socials">
-      <a href="https://instagram.com/your_handle" target="_blank" rel="noreferrer">Instagram</a>
-      <a href="https://youtube.com/your_channel" target="_blank" rel="noreferrer">YouTube</a>
-      <a href="mailto:your.email@example.com">Email</a>
-    </div>
-  );
-}
-
 export default function App() {
   const [lb, setLb] = useState({ open: false, index: 0 });
 
@@ -109,26 +103,31 @@ export default function App() {
   const prev = () => setLb((s) => ({ ...s, index: Math.max(0, s.index - 1) }));
   const next = () => setLb((s) => ({ ...s, index: Math.min(GALLERY.length - 1, s.index + 1) }));
 
+  // attempt to play background video programmatically (helps with autoplay policies)
+  useEffect(() => {
+    const v = document.getElementById('bgVideo');
+    if (!v) return;
+    // ensure muted (required for autoplay in many browsers)
+    v.muted = true;
+    v.play().catch((err) => {
+      // not fatal — log so you can paste errors if playback fails
+      console.warn('Background video play error:', err);
+    });
+  }, []);
+
   return (
     <>
       <Hero />
       <main>
         <section className="panel about">
           <div>
-            <h2>About & Skills</h2>
+            <h2>About Me</h2>
             <p>
-              I'm a photographer and videographer focused on editorial, commercial and cinematic storytelling.
+              Hi, I’m Anastus John A, a photographer with a passion for capturing real moments with authenticity and attention to detail. My work focuses on portraits, events and lifestyle — blending creative storytelling with a refined, modern aesthetic. I believe every image should feel honest and emotionally true. Thank you for visiting — I look forward to creating something meaningful with you.
             </p>
-            <ul className="skills">
-              <li>Editorial Photography</li>
-              <li>Cinematic Short-form Video</li>
-              <li>Studio & Location Lighting</li>
-              <li>Color Grading</li>
-            </ul>
 
             <div className="contact-quick">
               <a className="btn primary" href="#contact">Hire Me</a>
-              <a className="btn hollow" href="mailto:your.email@example.com">Email</a>
             </div>
           </div>
 
@@ -155,13 +154,11 @@ export default function App() {
 
         <section id="contact" className="panel contact">
           <h2>Let's work together</h2>
-          <p>Available for commissioned shoots, brand collaborations and films.</p>
+          <p>Available for commissioned shoots and brand collaborations.</p>
           <div className="contact-quick">
-            <a className="btn primary" href="mailto:your.email@example.com">Email Me</a>
-            <a className="btn hollow" href="tel:+911234567890">Call</a>
+            <a className="btn primary" href="mailto:reflectionsphotographybusiness@gmail.com">Email</a>
+            <a className="btn hollow" href="tel:+9163799227655">Call</a>
           </div>
-
-          <Socials />
         </section>
       </main>
 
@@ -175,7 +172,7 @@ export default function App() {
         />
       )}
 
-      <footer className="footer">© {new Date().getFullYear()} Anastus John</footer>
+      <footer className="footer">© {new Date().getFullYear()} Reflection Photography</footer>
     </>
   );
 }
