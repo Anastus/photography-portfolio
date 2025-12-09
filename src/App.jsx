@@ -39,7 +39,7 @@ function Hero() {
         <p className="site-sub">Photography · Videography · Visual Storytelling</p>
         <div className="hero-ctas">
           <a href="#portfolio" className="btn primary">View Work</a>
-          <a href="#contact" className="btn hollow">Instagram</a>
+          <a href="https://www.instagram.com/reflections_photography__?igsh=MTcxOG5pbWJycmExcQ%3D%3D&utm_source=qr" className="btn hollow" target="_blank" rel="noopener noreferrer">Instagram</a>
         </div>
       </div>
 

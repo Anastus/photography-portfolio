@@ -126,26 +126,51 @@
     justify-content: center;
     flex-wrap: wrap;
   }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 18px;
-    border-radius: 999px;
-    font-weight: 600;
-    text-decoration: none;
+  /* Unified button style — stronger outline, glassmorphism, filled-on-hover, subtle shadow + motion */
+  .btn.primary,
+  .btn.hollow {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     color: var(--accent);
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px  rgba(255,255,255,0.22);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: transform 220ms cubic-bezier(.2,.9,.3,1),
+                background-color 220ms ease,
+                box-shadow 220ms ease,
+                border-color 220ms ease;
   }
-  .btn.primary {
-    background: #ffffff;
-    color: #0b0b0c;
-    border: none;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+
+  /* stronger outline for default state */
+  .btn.primary,
+  .btn.hollow {
+    border-width: 1.5px;
+    border-color: rgba(255,255,255,0.26);
   }
-  .btn.primary:hover { transform: translateY(-3px); }
-  .btn.hollow:hover { background: rgba(255,255,255,0.02); transform: translateY(-2px); }
+
+  /* filled-on-hover: slightly brighter glass + subtle color fill */
+  .btn.primary:hover,
+  .btn.hollow:hover {
+    background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    border-color: rgba(255,255,255,0.34);
+  }
+
+  /* active (press) state */
+  .btn:active {
+    transform: translateY(-2px) scale(0.995);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.45);
+  }
+
+  /* focus-visible (keyboard) stronger ring */
+  .btn:focus-visible {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 0 4px rgba(255,255,255,0.04) inset;
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  /* small size adjustment */
+  .btn { padding: 12px 20px; }
   
   /* subtle floating badge */
   .hero-badge {
