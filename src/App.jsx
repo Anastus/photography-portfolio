@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
+
 /* Simple portfolio App (plain CSS, no Tailwind)
    Replace asset paths with your actual files under public/assets/
 */
 
 const GALLERY = [
-  { type: "image", src: "/assets/portfolio/photo1.jpg", title: "Urban Portrait" },
-  { type: "image", src: "/assets/portfolio/photo2.jpg", title: "Golden Hour" },
-  { type: "video", src: "/assets/portfolio/short_clip1.mp4", title: "Cinematic Clip" },
-  { type: "image", src: "/assets/portfolio/photo3.jpg", title: "Architectural" },
-  { type: "image", src: "/assets/portfolio/photo4.jpg", title: "Wedding Story" },
+  { type: "image", src: "/assets/portfolio/photo 1.jpg"},
+  { type: "image", src: "/assets/portfolio/photo 2.jpg"},
+  { type: "image", src: "/assets/portfolio/photo 3.jpg"},
+  { type: "image", src: "/assets/portfolio/photo 4.jpg"},
+  { type: "image", src: "/assets/portfolio/photo 5.jpg"},
+  { type: "image", src: "/assets/portfolio/photo 6.jpg"},
+  { type: "image", src: "/assets/portfolio/photo 7.jpg"},
+  { type: "image", src: "/assets/portfolio/photo 8.jpg"},
 ];
 
 function Hero() {
@@ -123,7 +127,7 @@ export default function App() {
           <div>
             <h2>About Me</h2>
             <p>
-              Hi, I’m Anastus John A, a photographer with a passion for capturing real moments with authenticity and attention to detail. My work focuses on portraits, events and lifestyle — blending creative storytelling with a refined, modern aesthetic. I believe every image should feel honest and emotionally true. Thank you for visiting — I look forward to creating something meaningful with you.
+              Hi, I’m Anastus John A, a photographer with a passion for capturing real moments with authenticity and attention to detail. My work focuses on portraits, events and lifestyle blending creative storytelling with a refined, modern aesthetic. I believe every image should feel honest and emotionally true. Thank you for visiting I look forward to creating something meaningful with you.
             </p>
 
             <div className="contact-quick">
@@ -138,7 +142,7 @@ export default function App() {
           </div>
         </section>
 
-        <Gallery onOpen={openLightbox} />
+        <Gallery items={GALLERY} onOpen={openLightbox} />  
 
         <section className="panel">
           <h2>Videography</h2>

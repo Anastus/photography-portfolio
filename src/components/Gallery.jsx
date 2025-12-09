@@ -1,33 +1,134 @@
-import React, { useContext } from 'react'
-import { LightboxContext } from '../contexts/LightboxContext'
+// src/components/Gallery.jsx
+import React, { useRef, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
 
-const gallery = [
-  { type:'image', src:'/assets/portfolio/photo1.jpg', title:'Urban Portrait' },
-  { type:'image', src:'/assets/portfolio/photo2.jpg', title:'Golden Hour' },
-  { type:'video', src:'/assets/portfolio/short_clip1.mp4', title:'Cinematic Clip' },
-  { type:'image', src:'/assets/portfolio/photo3.jpg', title:'Architectural' },
-  { type:'image', src:'/assets/portfolio/photo4.jpg', title:'Wedding Story' },
-]
+/**
+ * Horizontal portrait carousel.
+ * Props:
+ *  - items: [{ type: 'image'|'video', src, title }]
+ *  - onOpen(index)  // called when a card is activated (click or Enter/Space)
+ */
+export default function Gallery({ items = [], onOpen }) {
+  const scrollerRef = useRef(null);
 
-export default function Gallery(){
-  const { open } = useContext(LightboxContext)
+  const scrollBy = useCallback((dir = 1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.querySelector(".carousel-card");
+    const gap = parseInt(getComputedStyle(el).getPropertyValue("--gap") || 16, 10);
+    const step = (card?.offsetWidth || 320) + gap;
+    el.scrollBy({ left: step * dir, behavior: "smooth" });
+  }, []);
+
+  // keyboard left/right when carousel focused
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const onKey = (e) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        scrollBy(-1);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        scrollBy(1);
+      }
+    };
+    el.addEventListener("keydown", onKey);
+    return () => el.removeEventListener("keydown", onKey);
+  }, [scrollBy]);
+
+  // Lazy-load videos (only set src when card is near viewport)
+  useEffect(() => {
+    if (!("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target.querySelector("video[data-src]");
+          if (video && entry.isIntersecting) {
+            // set src and remove data-src so it loads
+            video.src = video.dataset.src;
+            video.removeAttribute("data-src");
+            // optionally video.load() if you want metadata loaded immediately:
+            // video.load();
+          }
+        });
+      },
+      { root: scrollerRef.current, rootMargin: "200px", threshold: 0.2 }
+    );
+
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.querySelectorAll(".carousel-card").forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
+
+  // handle keyboard activation (Enter / Space)
+  const handleKeyActivate = (e, index) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onOpen?.(index);
+    }
+  };
+
   return (
-    <section id="portfolio" className="py-8">
-      <h3 className="text-2xl font-semibold mb-6">Selected Work</h3>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {gallery.map((it, i)=> (
-          <button key={i} onClick={()=> open(gallery, i)} className="group relative rounded-xl overflow-hidden focus:outline-none">
-            {it.type === 'image' ? (
-              <img src={it.src} alt={it.title} loading="lazy" className="w-full h-44 object-cover group-hover:scale-105 transition-transform" />
-            ) : (
-              <div className="w-full h-44 bg-black/30 flex items-center justify-center">
-                <video src={it.src} className="w-full h-44 object-cover" />
-              </div>
-            )}
-            <div className="absolute left-3 bottom-3 bg-black/50 px-3 py-1 rounded-md text-xs">{it.title}</div>
-          </button>
-        ))}
+    <section id="portfolio" className="panel">
+      <div className="panel-header">
+        <h2>Photography</h2>
+        <div className="carousel-controls">
+          <button className="arrow left" onClick={() => scrollBy(-1)} aria-label="Scroll left">◀</button>
+          <button className="arrow right" onClick={() => scrollBy(1)} aria-label="Scroll right">▶</button>
+        </div>
+      </div>
+
+      <div className="carousel-wrap">
+        <div
+          className="carousel"
+          ref={scrollerRef}
+          tabIndex={0}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Photography carousel. Use left and right arrows to navigate."
+        >
+          {items.map((it, i) => (
+            <article
+              key={i}
+              className="carousel-card"
+              tabIndex={0}                       // make focusable
+              role="button"
+              aria-label={`Open ${it.title}`}
+              onClick={() => onOpen?.(i)}
+              onKeyDown={(e) => handleKeyActivate(e, i)}
+            >
+              {it.type === "image" ? (
+                <img src={it.src} alt={it.title} loading="lazy" />
+              ) : (
+                // data-src used by IntersectionObserver; poster can be provided in items if available
+                <video
+                  data-src={it.src}
+                  poster={it.poster || ""}
+                  muted
+                  playsInline
+                  preload="none"
+                />
+              )}
+
+              <div className="card-label">{it.title}</div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
-  )
+  );
 }
+
+Gallery.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.oneOf(["image", "video"]).isRequired,
+      src: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      poster: PropTypes.string,
+    })
+  ),
+  onOpen: PropTypes.func,
+};

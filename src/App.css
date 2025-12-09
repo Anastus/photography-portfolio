@@ -374,5 +374,136 @@
   
   /* ensure clickable targets are large enough on mobile */
   a.btn, button { min-height: 40px; padding: 10px 16px; }
+
+  .about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 28px;
+    padding: 64px 20px;
+  }
+    
+  /* fade-in paragraph */
+  .about p {
+    font-size: clamp(16px, 1.6vw, 20px);
+  }
   
+  /* center Hire Me button */
+  .contact-quick {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* ---------- Portrait-oriented responsive gallery (replace existing .grid/.tile rules) ---------- */
+
+/* Grid layout: responsive columns */
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, 1fr); /* mobile: 2 columns */
+  align-items: start;
+  margin-top: 8px;
+}
+@media (min-width: 720px) {
+  .grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } /* tablet */
+}
+@media (min-width: 1100px) {
+  .grid { grid-template-columns: repeat(4, 1fr); gap: 18px; } /* desktop */
+}
+
+/* Each tile is portrait. Use aspect-ratio where supported, with padding-top fallback. */
+.tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  cursor: pointer;
+  transition: transform 260ms ease, box-shadow 260ms ease;
+  /* If the browser supports aspect-ratio, this forces portrait shape */
+  aspect-ratio: 3 / 4; /* width : height = 3:4 (portrait) */
+  min-height: 220px;   /* reasonable minimum for tiny screens */
+}
+
+/* Fallback for older browsers: create a portrait box using a pseudo-element
+   (only used if aspect-ratio is not supported; won't hurt modern browsers) */
+.tile::before {
+  content: "";
+  display: block;
+  width: 100%;
+  padding-top: calc( (4 / 3) * 100% ); /* inverse of 3/4 -> 133.33% height */
+  height: 0;
+  visibility: hidden;
+}
+
+/* If aspect-ratio is supported, ensure content sits correctly */
+.tile > img,
+.tile > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  transition: transform 300ms ease;
+}
+
+/* Hover/peek effect */
+.tile:hover > img,
+.tile:hover > video {
+  transform: scale(1.03);
+}
+
+/* Label in the lower-left corner */
+.tile-label {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  background: rgba(0,0,0,0.6);
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 13px;
+  z-index: 3;
+}
+
+/* Ensure button/tile focus is visible for keyboard users */
+.tile:focus-visible {
+  outline: 3px solid rgba(255,255,255,0.08);
+  outline-offset: 4px;
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.5);
+}
+
+/* Slightly smaller tiles on very small screens */
+@media (max-width: 420px) {
+  .tile { aspect-ratio: 3 / 4; min-height: 200px; }
+  .tile-label { font-size: 12px; padding: 6px 8px; }
+}
+
+/* Accessibility: respect reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .tile, .tile > img, .tile > video { transition: none !important; transform: none !important; }
+}
+
+/* Contact section button spacing */
+.contact-quick {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;          /* ← space between Email + Call */
+  margin-top: 24px;
+}
+
+/* Optional (makes buttons equal size & cleaner) */
+.contact-quick .btn {
+  min-width: 120px;
+  text-align: center;
+}
   /* end of file */
