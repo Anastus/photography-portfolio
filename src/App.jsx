@@ -39,11 +39,11 @@ function Hero() {
       <div className="hero-overlay" />
 
       <div className="hero-content">
-        <h1 className="site-title">Reflections Photography</h1>
+        <h1 className="site-title">REFLECTIONS PHOTOGRAPHY</h1>
         <p className="site-sub">Photography · Videography · Visual Storytelling</p>
         <div className="hero-ctas">
-          <a href="#portfolio" className="btn primary">View Work</a>
-          <a href="https://www.instagram.com/reflections_photography__?igsh=MTcxOG5pbWJycmExcQ%3D%3D&utm_source=qr" className="btn hollow" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="#portfolio" className="btn primary">VIEW WORK</a>
+          <a href="https://www.instagram.com/reflections_photography__?igsh=MTcxOG5pbWJycmExcQ%3D%3D&utm_source=qr" className="btn hollow" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
         </div>
       </div>
 
@@ -55,7 +55,7 @@ function Hero() {
 function Gallery({ onOpen }) {
   return (
     <section id="portfolio" className="panel">
-      <h2>Photography</h2>
+      <h2>PHOTOGRAPHY</h2>
       <div className="grid">
         {GALLERY.map((it, i) => (
           <button
@@ -125,13 +125,13 @@ export default function App() {
       <main>
         <section className="panel about">
           <div>
-            <h2>About Me</h2>
+            <h2>ABOUT ME</h2>
             <p>
               Hi, I’m Anastus John A, a photographer with a passion for capturing real moments with authenticity and attention to detail. My work focuses on portraits, events and lifestyle blending creative storytelling with a refined, modern aesthetic. I believe every image should feel honest and emotionally true. Thank you for visiting I look forward to creating something meaningful with you.
             </p>
 
             <div className="contact-quick">
-              <a className="btn primary" href="#contact">Hire Me</a>
+              <a className="btn primary" href="#contact">HIRE ME</a>
             </div>
           </div>
 
@@ -145,23 +145,23 @@ export default function App() {
         <Gallery items={GALLERY} onOpen={openLightbox} />  
 
         <section className="panel">
-          <h2>Videography</h2>
+          <h2>VIDEOGRAPHY</h2>
           <div className="grid-2">
             <video controls poster="/assets/poster1.jpg">
-              <source src="/assets/showcase1.mp4" type="video/mp4" />
+              <source src="/assets/background 1.mp4" type="video/mp4" poster="/assets/poster.jpg"/>
             </video>
             <video controls poster="/assets/poster2.jpg">
-              <source src="/assets/showcase2.mp4" type="video/mp4" />
+              <source src="/assets/background 1.mp4" type="video/mp4" poster="/assets/poster.jpg"/>
             </video>
           </div>
         </section>
 
         <section id="contact" className="panel contact">
-          <h2>Let's work together</h2>
+          <h2>LET'S WORK TOGETHER</h2>
           <p>Available for commissioned shoots and brand collaborations.</p>
           <div className="contact-quick">
-            <a className="btn primary" href="mailto:reflectionsphotographybusiness@gmail.com">Email</a>
-            <a className="btn hollow" href="tel:+9163799227655">Call</a>
+            <a className="btn primary" href="mailto:reflectionsphotographybusiness@gmail.com">EMAIL</a>
+            <a className="btn hollow" href="tel:+9163799227655">CALL</a>
           </div>
         </section>
       </main>
@@ -176,7 +176,7 @@ export default function App() {
         />
       )}
 
-      <footer className="footer">© {new Date().getFullYear()} Reflection Photography</footer>
+      <footer className="footer">© {new Date().getFullYear()} REFLECTIONS PHOTOGRAPHY</footer>
     </>
   );
 }
